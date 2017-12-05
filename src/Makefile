@@ -5,7 +5,7 @@ LDFLAGS=-lSDL2_mixer -L/usr/lib64 -lSDL2 -lSDL2_mixer -lSDL2_ttf -lSDL2_image
 SOURCES=$(wildcard *.cpp)
 OBJDIR=../obj
 OBJECTS=$(addprefix $(OBJDIR)/, $(SOURCES:.cpp=.o))
-EXECUTABLE=../pacman
+EXECUTABLE=../game/pacman
 
 all: $(info EXECUTABLE is [${EXECUTABLE}])  $(EXECUTABLE)
 
