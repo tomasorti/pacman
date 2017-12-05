@@ -1,5 +1,5 @@
 #include "menu_main.h"
-#include "config.h"
+#define VERSION "0.9.3"
 
 MenuMain* MenuMain::instance = NULL;
 

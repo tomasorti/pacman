@@ -11,7 +11,7 @@ void getFilePath(char filePath[], const char file[]) {
      if(WINDOWS)
          strcpy(installDir, "");
      else
-         strcpy(installDir, "/usr/local/share/pacman/");
+         strcpy(installDir, "./");
      strcpy(filePath, installDir);
      strcat(filePath, file);
 }
