@@ -15,6 +15,8 @@ public:
     static Screen *getInstance();
     static void cleanUpInstance();
 
+    static std::string fontFilename;
+    
     // initialization
     // return whether an occured during the initialization of SDL
     bool hasSDLInitErrorOccured() {

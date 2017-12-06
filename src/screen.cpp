@@ -1,5 +1,7 @@
 #include "screen.h"
 
+std::string Screen::fontFilename;
+
 TTF_Font *Screen::smallFont     = NULL;
 TTF_Font *Screen::font          = NULL;
 TTF_Font *Screen::largeFont     = NULL;
@@ -196,47 +198,65 @@ void Screen::setFullscreen(bool fs) {
 }
 
 SDL_Surface *Screen::loadImage(const char *filename, int transparentColor) {
+
     char filePath[256];
     getFilePath(filePath, filename);
+
     SDL_Surface *surface, *temp;
     temp = IMG_Load(filePath);
     if (!temp) {
         std::cout << "Unable to load image: " << IMG_GetError() << std::endl;
         exit(EXIT_FAILURE);
     }
+
     if (transparentColor != -1)
         SDL_SetColorKey(temp, SDL_TRUE | SDL_RLEACCEL, (Uint32)SDL_MapRGB(temp->format, (uint8_t)transparentColor, (uint8_t)transparentColor, (uint8_t)transparentColor));
     surface = SDL_ConvertSurface(temp,  Screen::getInstance()->getSurface()->format, 0);
+
     if (surface == NULL) {
         std::cout << "Unable to convert image to display format: " << SDL_GetError() << std::endl;
         exit(EXIT_FAILURE);
     }
+
     SDL_FreeSurface(temp);
     return surface;
 }
 
-TTF_Font *Screen::loadFont(const char *filename, int ptSize) {
+TTF_Font* Screen::loadFont(const char *filename, int ptSize) {
+
     char filePath[256];
     getFilePath(filePath, filename);
-    TTF_Font *font = TTF_OpenFont(filePath, ptSize);
+
+
+    TTF_Font* font = TTF_OpenFont(filePath, ptSize);
     if (!font) {
         std::cout << "Unable to open TTF font: " << TTF_GetError() << std::endl;
-        exit(EXIT_FAILURE);
+
+        const char* defaultFont = "fonts/Cheapmot.TTF";
+        getFilePath(filePath, defaultFont);
+        font = TTF_OpenFont(filePath, ptSize);        
+
+        if (!font)
+            exit(EXIT_FAILURE);
     }
+
     return font;
 }
 
 SDL_Surface *Screen::getTextSurface(TTF_Font *font, const char *text, SDL_Color color) {
+
     SDL_Surface *temp = TTF_RenderText_Solid(font, text, color);
     if (!temp) {
         std::cout << "Unable to render text \"" << text << "\": " << TTF_GetError() << std::endl;
         exit(EXIT_FAILURE);
     }
+
     SDL_Surface *surface = SDL_ConvertSurface(temp,  Screen::getInstance()->getSurface()->format, 0);
     if (surface == NULL) {
         std::cout << "Unable to convert text surface to display format: " << SDL_GetError() << std::endl;
         exit(EXIT_FAILURE);
     }
+
     SDL_FreeSurface(temp);
     return surface;
 }
@@ -298,27 +318,27 @@ void Screen::fillRect(SDL_Rect *rect, Uint8 r, Uint8 g, Uint8 b) {
 
 TTF_Font *Screen::getSmallFont() {
     if (!smallFont)
-        smallFont = loadFont("fonts/Cheapmot.TTF", 12);
+        smallFont = loadFont(fontFilename.c_str(), 12);
     return smallFont;
 }
 TTF_Font *Screen::getFont() {
     if (!font)
-        font = loadFont("fonts/Cheapmot.TTF", 20);
+        font = loadFont(fontFilename.c_str(), 20);
     return font;
 }
 TTF_Font *Screen::getLargeFont() {
     if (!largeFont)
-        largeFont = loadFont("fonts/Cheapmot.TTF", 24);
+        largeFont = loadFont(fontFilename.c_str(), 24);
     return largeFont;
 }
 TTF_Font *Screen::getVeryLargeFont() {
     if (!veryLargeFont)
-        veryLargeFont = loadFont("fonts/Cheapmot.TTF", 48);
+        veryLargeFont = loadFont(fontFilename.c_str(), 48);
     return veryLargeFont;
 }
 TTF_Font *Screen::getHugeFont() {
     if (!hugeFont)
-        hugeFont = loadFont("fonts/Cheapmot.TTF", 96);
+        hugeFont = loadFont(fontFilename.c_str(), 96);
     return hugeFont;
 }
 

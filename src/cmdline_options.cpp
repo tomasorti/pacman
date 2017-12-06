@@ -20,6 +20,7 @@ void CommandLineOptions::printHelp() {
               << "  --name=...         Provide the player's name."                       << std::endl
               << "  --highscore=...    Define path to highscore file."                   << std::endl
               << "  --hs-key=...       Highscore encryption key (hexadecimal)."          << std::endl
+              << "  --font=...         Font file used to render menus and titles."       << std::endl
               << std::endl;          
 }
 
