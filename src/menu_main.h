@@ -8,19 +8,19 @@
 #include "highscore.h"
 
 class MenuMain : public Menu {
-	public:
-		static MenuMain* getInstance();
-		static void cleanUpInstance();
-		int show();
-	private:
-		MenuMain();
-		~MenuMain();
-		static MenuMain* instance;
-		enum Entries {BACK, ABOUT, HIGHSCORE, OPTIONS, STARTGAME};
-		Menu *menuoptions;
-		Menu *menuabout;
-		SDL_Surface *appTitle1, *appTitle2, *titlePacman, *version;
-		int handleSelection();
-		void drawTitle();
+public:
+    static MenuMain* getInstance();
+    static void cleanUpInstance();
+    int show();
+private:
+    MenuMain();
+    ~MenuMain();
+    static MenuMain* instance;
+    enum Entries {BACK, ABOUT, HIGHSCORE, OPTIONS, STARTGAME};
+    Menu *menuoptions;
+    Menu *menuabout;
+    SDL_Surface *appTitle1, *appTitle2, *titlePacman, *version;
+    int handleSelection();
+    void drawTitle();
 };
 #endif

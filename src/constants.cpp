@@ -17,14 +17,14 @@ Constants::~Constants() {
 }
 
 SDL_Color Constants::getIndexedColor(int color) {
-	switch (color) {
-		case YELLOW:
-			return YELLOW_COLOR;
-		case RED:
-			return RED_COLOR;
-		case GRAY:
-			return GRAY_COLOR;
-		default:
-			return WHITE_COLOR;
-	}
+    switch (color) {
+    case YELLOW:
+        return YELLOW_COLOR;
+    case RED:
+        return RED_COLOR;
+    case GRAY:
+        return GRAY_COLOR;
+    default:
+        return WHITE_COLOR;
+    }
 }

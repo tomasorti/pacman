@@ -7,21 +7,21 @@
 #include "screen.h"
 
 class MenuItem {
-	public:
-		MenuItem(const char* menuItem, const char* menuItemAlt = NULL);
-		~MenuItem();
-		SDL_Surface* getCurrentMenuItem();
-		void setSelectMenuItem(bool set = false);
-		void toggleMenuItem();
-		void setMenuItemAlt(bool set = false);
-		void setXPosition(int x);
-		void setYPosition(int y);
-		int getXPosition() const;
-		int getYPosition() const;
-	private:
-		int x, y;
-		bool selected, altMenu;
-		SDL_Surface *menuItem, *menuItemSel; 
-		SDL_Surface *menuItemAlt, *menuItemSelAlt;
+public:
+    MenuItem(const char* menuItem, const char* menuItemAlt = NULL);
+    ~MenuItem();
+    SDL_Surface* getCurrentMenuItem();
+    void setSelectMenuItem(bool set = false);
+    void toggleMenuItem();
+    void setMenuItemAlt(bool set = false);
+    void setXPosition(int x);
+    void setYPosition(int y);
+    int getXPosition() const;
+    int getYPosition() const;
+private:
+    int x, y;
+    bool selected, altMenu;
+    SDL_Surface *menuItem, *menuItemSel;
+    SDL_Surface *menuItemAlt, *menuItemSelAlt;
 };
 #endif

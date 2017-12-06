@@ -10,24 +10,24 @@
 using namespace std;
 
 class Menu {
-	public:
-		Menu(const char* title = NULL);
-		virtual ~Menu();
-		virtual void draw(bool updateAll = true);
-		virtual int show();
-		virtual void drawTitle();
-		void addMenuItem(const char* menuItem, const char* menuItemAlt = NULL);
-		void menuItemUp();
-		void menuItemDown();
-		void menuItemSelect(uint8_t selection);
-		MenuItem* getSelectedMenuItem();
-	protected:
-		uint8_t selection;
-		vector<MenuItem*> menuItems;
-		SDL_Surface *menuTitle;
-		virtual int eventloop();
-		void drawMenuItems();
-		virtual int handleSelection();
-		virtual void updateMenuItemNames();
+public:
+    Menu(const char* title = NULL);
+    virtual ~Menu();
+    virtual void draw(bool updateAll = true);
+    virtual int show();
+    virtual void drawTitle();
+    void addMenuItem(const char* menuItem, const char* menuItemAlt = NULL);
+    void menuItemUp();
+    void menuItemDown();
+    void menuItemSelect(uint8_t selection);
+    MenuItem* getSelectedMenuItem();
+protected:
+    uint8_t selection;
+    vector<MenuItem*> menuItems;
+    SDL_Surface *menuTitle;
+    virtual int eventloop();
+    void drawMenuItems();
+    virtual int handleSelection();
+    virtual void updateMenuItemNames();
 };
 #endif
