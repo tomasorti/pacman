@@ -12,6 +12,7 @@
 #include "pacman_figur.h"
 #include "menu_main.h"
 #include "highscore.h"
+#include "logger.h"
 
 #define VERSION 1.0
 
@@ -21,6 +22,8 @@ void highscore();
 
 int main(int argc, char *argv[]) {
 
+    LOGGER.log("Pacman starts...");
+    
     srand((unsigned int)time(0)); // init randomize
 
     setCommandLine(argc, argv);
@@ -33,12 +36,13 @@ int main(int argc, char *argv[]) {
     
     while (MenuMain::getInstance()->show()) {
 
-        Game* game = Game::getInstance();        
-        game->start();
-        if (game->isGameOver()) {
-            // do not load() here, this has been done at the time the game was over
-            highscore();
-        }
+        // Game* game = Game::getInstance();        
+        // game->start();
+        // if (game->isGameOver()) {
+        //     // do not load() here, this has been done at the time the game was over
+        //     highscore();
+        // }
+
     }
 
     cleanUp();

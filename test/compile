@@ -1,0 +1,1 @@
+g++ ../src/logger.cpp testlog.cpp -I../src -o testlog 

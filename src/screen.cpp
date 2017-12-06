@@ -1,4 +1,5 @@
 #include "screen.h"
+#include "logger.h"
 
 std::string Screen::fontFilename;
 
@@ -52,6 +53,7 @@ Screen::Screen(): rect_num(0),
                   fullscreen(CommandLineOptions::exists("f","fullscreen")),
                   scalingFactor(1)
 {
+    LOGGER.log("Screen started");
     // initialize SDL
     if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO) != 0) {
         std::cout << "SDL initialization failed: " << SDL_GetError() << std::endl;
