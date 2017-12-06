@@ -1,7 +1,27 @@
+#include <iostream>
 #include "cmdline_options.h"
 
 int CommandLineOptions::num_args = 0;
 std::string **CommandLineOptions::args = NULL;
+
+void CommandLineOptions::printHelp() {
+        
+    std::cout << "This game is a Pacman clone (version 1.0 )."              << std::endl
+              << "Usage: pacman [options]"                                               << std::endl
+              << std::endl
+              << "Options:"                                                              << std::endl
+              << "  -h, --help         Display this help message and quit."              << std::endl
+              << "  -f, --fullscreen   Start the game in fullscreen mode."               << std::endl
+              << "  --noscaling        Do not try to scale the game in fullscreen mode." << std::endl
+              << "  --nocentering      Do not center the game in fullscreen mode."       << std::endl
+              << "  -s, --nosound      Start with sound switched off."                   << std::endl
+              << "  -m, --nomusic      Start with music switched off."                   << std::endl
+              << "  -v, --version      Print version number and quit."                   << std::endl
+              << "  --name=...         Provide the player's name."                       << std::endl
+              << "  --highscore=...    Define path to highscore file."                   << std::endl
+              << "  --hs-key=...       Highscore encryption key (hexadecimal)."          << std::endl
+              << std::endl;          
+}
 
 void CommandLineOptions::set(int argc, char **argv) {
     cleanUp();
@@ -22,6 +42,7 @@ void CommandLineOptions::cleanUp() {
 }
 
 bool CommandLineOptions::exists(std::string unixStyle, std::string gnuStyle) {
+
     for (int i = 1; i < num_args; i++) {  // 0 is the program executable's path
         if (*args[i] == "--") {
             // end of options reached
@@ -42,11 +63,14 @@ bool CommandLineOptions::exists(std::string unixStyle, std::string gnuStyle) {
 }
 
 std::string CommandLineOptions::getValue(std::string unixStyle, std::string gnuStyle) {
+
     for (int i = 1; i < num_args; i++) {  // 0 is the program executable's path
+
         if (*args[i] == "--") {
             // end of options reached
             return "";
         } else if (args[i]->size() >= 2 && args[i]->substr(0,2) == "--") {
+
             if (gnuStyle != "" && args[i]->substr(2, gnuStyle.size()) == gnuStyle) {
                 if (args[i]->size() == gnuStyle.size()+2) {
                     // style: --key value

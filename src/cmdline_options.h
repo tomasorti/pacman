@@ -9,6 +9,8 @@ public:
     static void cleanUp();
     static bool exists(std::string unixStyle, std::string gnuStyle = "");
     static std::string getValue(std::string unixStyle, std::string gnuStyle = "");
+    static void printHelp();
+    
 private:
     static int num_args;
     static std::string **args;
