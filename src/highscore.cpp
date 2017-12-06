@@ -68,6 +68,7 @@ HighscoreList::HighscoreList(uint8_t maxSize):
         sfScores[i]      = NULL;
         sfLevels[i]      = NULL;
     }
+
     filePath = std::string(CommandLineOptions::getValue("", "highscore"));
     if (0 == filePath.length()) {
         createGameDir();
@@ -80,6 +81,7 @@ HighscoreList::HighscoreList(uint8_t maxSize):
         filePath += "highscore";
         std::cerr << "Please provide a path to a file rather than a directory via the --highscore parameter. Changed to " << filePath << std::endl;
     }
+
     encryptionKey = std::string(CommandLineOptions::getValue("", "hs-key"));
     if (encryptionKey.length()) {
         rawEncryptionKey = "";

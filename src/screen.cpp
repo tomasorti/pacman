@@ -9,13 +9,16 @@ TTF_Font *Screen::hugeFont      = NULL;
 Screen *Screen::instance = NULL;
 
 Screen *Screen::getInstance() {
+
     if (!instance) {
         instance = new Screen();
     }
+
     return instance;
 }
 
 void Screen::cleanUpInstance() {
+
     if (smallFont) {
         TTF_CloseFont(smallFont);
         smallFont = NULL;
@@ -42,35 +45,37 @@ void Screen::cleanUpInstance() {
     }
 }
 
-Screen::Screen():
-    sdlInitErrorOccured(false),
-    fullscreen(CommandLineOptions::exists("f","fullscreen")),
-    rect_num(0),
-    scalingFactor(1)
+Screen::Screen(): rect_num(0),
+                  sdlInitErrorOccured(false),
+                  fullscreen(CommandLineOptions::exists("f","fullscreen")),
+                  scalingFactor(1)
 {
     // initialize SDL
-    if(SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO) != 0) {
+    if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO) != 0) {
         std::cout << "SDL initialization failed: " << SDL_GetError() << std::endl;
         sdlInitErrorOccured = true;
     }
-    if(!sdlInitErrorOccured && TTF_Init() == -1) {
+    
+    if (!sdlInitErrorOccured && TTF_Init() == -1) {
         std::cout << "TTF initialization failed: " << TTF_GetError() << std::endl;
         sdlInitErrorOccured = true;
+
     }
+
     if (!sdlInitErrorOccured) {
-        window = SDL_CreateWindow("Pacman",
-                                  SDL_WINDOWPOS_UNDEFINED,
-                                  SDL_WINDOWPOS_UNDEFINED,
-                                  Constants::WINDOW_WIDTH,
-                                  Constants::WINDOW_HEIGHT,
+        window = SDL_CreateWindow("Pacman", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
+                                  Constants::WINDOW_WIDTH, Constants::WINDOW_HEIGHT,
                                   fullscreen ? SDL_WINDOW_FULLSCREEN_DESKTOP : 0);
         screen_surface = SDL_GetWindowSurface(window);
+
         computeClipRect();
-        if(screen_surface == 0) {
+
+        if (screen_surface == 0) {
             std::cout << "Setting video mode failed: " << SDL_GetError() << std::endl;
             sdlInitErrorOccured = true;
         }
     }
+
     atexit(Screen::cleanUpInstance);
 }
 
@@ -104,6 +109,7 @@ void Screen::AddUpdateRects(int x, int y, int w, int h) {
 }
 
 void Screen::addTotalUpdateRect() {
+
     rects[0].x = 0;
     rects[0].y = 0;
     rects[0].w = screen_surface->w;  // no scalingFactor as screen_surface already is the total screen surface
@@ -121,20 +127,24 @@ void Screen::Refresh() {
 }
 
 void Screen::draw_dynamic_content(SDL_Surface *surface, int x, int y) {
+
     SDL_Rect dest;
     dest.x = (short int) x*scalingFactor + clipRect.x;
     dest.y = (short int) y*scalingFactor + clipRect.y;
     dest.w = (short int) surface->w * scalingFactor;
     dest.h = (short int) surface->h * scalingFactor;
+
     if (scalingFactor > 1) {
         SDL_BlitScaled(surface, NULL, screen_surface, &dest);
     } else {
         SDL_BlitSurface(surface, NULL, screen_surface, &dest);
     }
+
     AddUpdateRects(x, y, surface->w + 10, surface->h);
 }
 
 void Screen::draw(SDL_Surface* graphic, int offset_x, int offset_y) {
+
     if (0 == offset_x && 0 == offset_y && 0 == clipRect.x && 0 == clipRect.y && scalingFactor == 1) {
         SDL_BlitSurface(graphic, NULL, screen_surface, NULL);
     } else {
@@ -143,6 +153,7 @@ void Screen::draw(SDL_Surface* graphic, int offset_x, int offset_y) {
         position.y = (short int) offset_y*scalingFactor + clipRect.y;
         position.w = (short int) graphic->w * scalingFactor;
         position.h = (short int) graphic->h * scalingFactor;
+
         if (scalingFactor > 1) {
             SDL_BlitScaled(graphic, NULL, screen_surface, &position);
         } else {
@@ -152,9 +163,11 @@ void Screen::draw(SDL_Surface* graphic, int offset_x, int offset_y) {
 }
 
 void Screen::setFullscreen(bool fs) {
+
     if (fs == fullscreen) {
         return;  // the desired mode already has been activated, so do nothing
     }
+
     SDL_SetWindowSize(window, Constants::WINDOW_WIDTH, Constants::WINDOW_HEIGHT);
     SDL_SetWindowPosition(window, 0, 0);
     if (fs) {
@@ -162,8 +175,10 @@ void Screen::setFullscreen(bool fs) {
     } else {
         SDL_SetWindowFullscreen(window, 0);
     }
+
     SDL_SetWindowSize(window, Constants::WINDOW_WIDTH, Constants::WINDOW_HEIGHT);
     SDL_SetWindowPosition(window, 0, 0);
+
     SDL_Surface* newScreen = SDL_GetWindowSurface(window);
     if(newScreen) {
         screen_surface = newScreen;
@@ -232,6 +247,7 @@ void Screen::clear() {
 }
 
 void Screen::clearOutsideClipRect() {
+
     SDL_Rect rect;
     if (clipRect.x > 0) {
         rect.x = 0;
@@ -240,6 +256,7 @@ void Screen::clearOutsideClipRect() {
         rect.h = screen_surface->h;
         SDL_FillRect(screen_surface, &rect, SDL_MapRGB(screen_surface->format, 0, 0, 0));
     }
+
     if (clipRect.x + clipRect.w*scalingFactor < screen_surface->w) {
         rect.x = clipRect.x + clipRect.w*scalingFactor;
         rect.y = 0;
@@ -247,6 +264,7 @@ void Screen::clearOutsideClipRect() {
         rect.h = screen_surface->h;
         SDL_FillRect(screen_surface, &rect, SDL_MapRGB(screen_surface->format, 0, 0, 0));
     }
+
     if (clipRect.y > 0) {
         rect.x = clipRect.x;
         rect.y = 0;
@@ -254,6 +272,7 @@ void Screen::clearOutsideClipRect() {
         rect.h = clipRect.y;
         SDL_FillRect(screen_surface, &rect, SDL_MapRGB(screen_surface->format, 0, 0, 0));
     }
+
     if (clipRect.y + clipRect.h*scalingFactor < screen_surface->h) {
         rect.x = clipRect.x;
         rect.y = clipRect.y + clipRect.h*scalingFactor;
@@ -264,6 +283,7 @@ void Screen::clearOutsideClipRect() {
 }
 
 void Screen::fillRect(SDL_Rect *rect, Uint8 r, Uint8 g, Uint8 b) {
+
     if (0 == clipRect.x && 0 == clipRect.y && scalingFactor == 1) {
         SDL_FillRect(screen_surface, rect, SDL_MapRGB(screen_surface->format, r, g, b));
     } else {

@@ -5,36 +5,40 @@
 Game *Game::instance = NULL;
 
 Game *Game::getInstance() {
+
     if (!instance) {
         instance = new Game();
     }
+
     return instance;
 }
 
 void Game::cleanUpInstance() {
+
     if (instance) {
         delete instance;
         instance = NULL;
     }
 }
 
-Game::Game():
-    gameOver(false),
-    stopMoving(false),
-    refreshGhosts(false),
-    pause(false),
-    cnt_hunting_mode(-1),
-    completeRedraw(false)
+Game::Game(): gameOver(false),
+              stopMoving(false),
+              refreshGhosts(false),
+              pause(false),
+              cnt_hunting_mode(-1),
+              completeRedraw(false)
 {
     scoreLabel = Screen::getTextSurface(Screen::getFont(), "Score", Constants::WHITE_COLOR);
     levelLabel = Screen::getTextSurface(Screen::getFont(), "Level", Constants::WHITE_COLOR);
 }
 
 Game::~Game() {
+    
     if (scoreLabel) {
         SDL_FreeSurface(scoreLabel);
         scoreLabel = NULL;
     }
+    
     if (levelLabel) {
         SDL_FreeSurface(levelLabel);
         levelLabel = NULL;
@@ -42,6 +46,7 @@ Game::~Game() {
 }
 
 void Game::init() {
+
     gameOver         = false;
     refreshGhosts    = false;
     stopMoving       = false;
@@ -136,7 +141,7 @@ bool Game::eventloop() {
         }
         // Redraw, when overlapped by foreign window
         if(event.window.event == SDL_WINDOWEVENT_EXPOSED ||
-                event.window.event == SDL_WINDOWEVENT_FOCUS_GAINED) {
+           event.window.event == SDL_WINDOWEVENT_FOCUS_GAINED) {
             Screen::getInstance()->clearOutsideClipRect();
             Screen::getInstance()->addTotalUpdateRect();
             Screen::getInstance()->Refresh();
@@ -164,7 +169,9 @@ void Game::setGameOver(bool gameOver) {
     HighscoreList::getInstance()->load();
     if (!HighscoreList::getInstance()->isReadonly()) {
         HighscoreList::getInstance()->resetHighlightedEntry();
-        HighscoreList::getInstance()->insertEntry(new HighscoreEntry(CommandLineOptions::getValue("","name"), Labyrinth::getInstance()->getScore(), Labyrinth::getInstance()->getLevelNumber()));
+        HighscoreList::getInstance()->insertEntry(new HighscoreEntry(CommandLineOptions::getValue("","name"),
+                                                                     Labyrinth::getInstance()->getScore(),
+                                                                     Labyrinth::getInstance()->getLevelNumber()));
         //HighscoreList::getInstance()->print();  // for testing purposes
     }
 }

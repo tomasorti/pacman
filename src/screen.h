@@ -4,6 +4,7 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_ttf.h>
+
 #include <iostream>
 #include "cmdline_options.h"
 #include "constants.h"
@@ -92,17 +93,22 @@ public:
 
 private:
     static Screen *instance;
-    // constructor and destructor
+
     Screen();
     ~Screen();
+
     SDL_Window *window;
     SDL_Rect rects[Constants::MAX_UPDATE_RECTS], clipRect;
     int rect_num;
+
     SDL_Surface *screen_surface;
     SDL_Texture *txScreenSurface;
+
     bool sdlInitErrorOccured;
     bool fullscreen;
+
     static TTF_Font *smallFont, *font, *largeFont, *veryLargeFont, *hugeFont;
+
     void computeClipRect();
     int scalingFactor;
 };
